@@ -1,1 +1,1 @@
-# HappyEat-API
+# SKELETON-API

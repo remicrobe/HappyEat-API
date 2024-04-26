@@ -1,0 +1,479 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "HappyEat API",
+    "version": "1.0.0",
+    "description": "API for HappyEat application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    },
+    {
+      "url": "https://private-end-point.com/",
+      "description": "Production server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "UUID"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerToken": []
+    }
+  ],
+  "paths": {
+    "/user/register": {
+      "post": {
+        "summary": "User registration",
+        "description": "Register a new user",
+        "tags": ["Utilisateur"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "content": {
+              "application/json": {
+                "example": {
+                  "email": "user@example.com",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "username": "johndoe",
+                  "tokenCreatedAt": "2024-03-26T12:00:00Z",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  "refreshTokenCreatedAt": "2024-03-26T12:00:00Z",
+                  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Login with existing credentials",
+        "tags": ["Utilisateur"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "example": {
+                  "email": "user@example.com",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "username": "johndoe",
+                  "tokenCreatedAt": "2024-03-26T12:00:00Z",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  "refreshTokenCreatedAt": "2024-03-26T12:00:00Z",
+                  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/refresh-token/{refreshToken}": {
+      "get": {
+        "summary": "Refresh access token",
+        "description": "Exchange refresh token for a new access token",
+        "tags": ["Utilisateur"],
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "tokenCreatedAt": "2024-03-26T12:00:00Z",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  "refreshTokenCreatedAt": "2024-03-26T12:00:00Z",
+                  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "put": {
+        "summary": "Update user information",
+        "description": "Update user details",
+        "tags": ["Utilisateur"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User information updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "email": "user@example.com",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "username": "johndoe"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vote/getTodayVote": {
+      "get": {
+        "summary": "Get today's votes",
+        "description": "Retrieve votes casted today",
+        "tags": ["Vote"],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of today's votes",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "createdAt": "2024-03-26T12:00:00Z",
+                    "restaurant": {
+                      "id": 1,
+                      "name": "Restaurant Name",
+                      "emoji": "🍔"
+                    },
+                    "user": {
+                      "email": "user@example.com",
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "username": "johndoe"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vote/{idRestaurant}": {
+      "post": {
+        "summary": "Vote or unvote for a restaurant",
+        "description": "Vote or unvote for a specific restaurant",
+        "tags": ["Vote"],
+        "parameters": [
+          {
+            "name": "idRestaurant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User list who voted for the restaurant",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "email": "user1@example.com",
+                    "firstName": "Alice",
+                    "lastName": "Smith",
+                    "username": "alice"
+                  },
+                  {
+                    "email": "user2@example.com",
+                    "firstName": "Bob",
+                    "lastName": "Johnson",
+                    "username": "bob"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/restaurant/create": {
+      "post": {
+        "summary": "Create a restaurant",
+        "description": "Create a new restaurant",
+        "tags": ["Restaurant"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "emoji": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restaurant created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "emoji": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/restaurant/{idRestaurant}": {
+      "delete": {
+        "summary": "Delete a restaurant",
+        "description": "Delete a restaurant by ID",
+        "tags": ["Restaurant"],
+        "parameters": [
+          {
+            "name": "idRestaurant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the restaurant"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restaurant deleted successfully"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a restaurant",
+        "description": "Update a restaurant by ID",
+        "tags": ["Restaurant"],
+        "parameters": [
+          {
+            "name": "idRestaurant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the restaurant"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "emoji": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restaurant updated successfully"
+          }
+        }
+      }
+    },
+    "/restaurant": {
+      "get": {
+        "summary": "Get all restaurants",
+        "description": "Get a list of all restaurants",
+        "tags": ["Restaurant"],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/stats/user/mostVoted/{period}": {
+      "get": {
+        "summary": "Get most voted user",
+        "description": "Get the most voted user within a specified period",
+        "tags": ["Stats"],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["month", "week"]
+            },
+            "description": "Period ('month' or 'week')"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/stats/user/all": {
+      "get": {
+        "summary": "Get all users' votes",
+        "description": "Get the number of votes for all users",
+        "tags": ["Stats"],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/stats/resto/mostVoted/{period}": {
+      "get": {
+        "summary": "Get most voted restaurant",
+        "description": "Get the most voted restaurant within a specified period",
+        "tags": ["Stats"],
+        "parameters": [
+          {
+            "name": "period",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["month", "week"]
+            },
+            "description": "Period ('month' or 'week')"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/stats/resto/all": {
+      "get": {
+        "summary": "Get all restaurants' votes",
+        "description": "Get the number of votes for all restaurants",
+        "tags": ["Stats"],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    }
+  }
+}
